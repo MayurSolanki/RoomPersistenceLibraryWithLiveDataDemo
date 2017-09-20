@@ -143,8 +143,6 @@ public class RoomActivity extends LifecycleActivity {
                 }).start();
 
 
-
-
                 Toast.makeText(RoomActivity.this, "User Updated ", Toast.LENGTH_LONG).show();
 
                 dialog.dismiss();
@@ -153,7 +151,6 @@ public class RoomActivity extends LifecycleActivity {
         alert.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -161,12 +158,10 @@ public class RoomActivity extends LifecycleActivity {
                     }
                 }).start();
 
-
-
                 Toast.makeText(RoomActivity.this, "User Deleted ", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
-        }); //End of alert.setNegativeButton
+        });
         AlertDialog alertDialog = alert.create();
         alertDialog.show();
 
@@ -206,8 +201,6 @@ public class RoomActivity extends LifecycleActivity {
                 }
             }
         });
-
-
     }
 
 
