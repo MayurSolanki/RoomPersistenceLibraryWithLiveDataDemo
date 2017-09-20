@@ -9,7 +9,7 @@ import android.arch.persistence.room.Room;
 
 public class App extends Application {
     public static App INSTANCE;
-    private static final String DATABASE_NAME = "OrigzoUserDb";
+    private static final String DATABASE_NAME = "UserDb";
 
     private UserDatabase userDatabase;
 
