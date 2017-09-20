@@ -1,7 +1,9 @@
 package com.demo.learnroomlifecycleslivedataviewmodel.room;
 
 import android.app.Application;
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.migration.Migration;
 
 /**
  * Created by nikunj on 15/9/17.
@@ -27,6 +29,8 @@ public class App extends Application {
                 .build();
 
         INSTANCE = this;
+
+
     }
     public UserDatabase getDB() {
         return userDatabase;
