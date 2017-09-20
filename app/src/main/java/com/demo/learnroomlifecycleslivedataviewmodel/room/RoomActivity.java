@@ -37,7 +37,7 @@ public class RoomActivity extends LifecycleActivity {
     public UserAdapter userAdapter;
     UserLiveData userLiveData = new UserLiveData();
     ActivityRoomBinding activityRoomBinding;
-
+    UserViewModel userViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class RoomActivity extends LifecycleActivity {
         activityRoomBinding = DataBindingUtil.setContentView(this, R.layout.activity_room);
 
 
-        UserViewModel userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         subscribeUi(userViewModel);
 
@@ -66,10 +66,6 @@ public class RoomActivity extends LifecycleActivity {
 
                 openDialogToEdit(userAdapter.getUserDetail(position));
 
-
-
-
-
             }
 
             @Override
@@ -83,27 +79,13 @@ public class RoomActivity extends LifecycleActivity {
             @Override
             public void onClick(View view) {
 
+
                 if (etUserName.getText().toString().trim().isEmpty()) {
                     Toast.makeText(RoomActivity.this, "Username required !!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-
-
-                        UserDetail product = new UserDetail();
-                        product.setUserName(etUserName.getText().toString().trim());
-
-
-                        App.get().getDB().userDao().insertUserDetail(product);
-
-
-                        return null;
-                    }
-                }.execute();
-
+                userViewModel.insertUserInDb(etUserName.getText().toString().trim());
 
             }
         });
@@ -135,13 +117,8 @@ public class RoomActivity extends LifecycleActivity {
                 userDetail1.userId = userDetail.userId;
                 userDetail1.setUserName(srt);
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        App.get().getDB().userDao().update(userDetail1);
-                    }
-                }).start();
 
+                userViewModel.updateUserInfo(userDetail1);
 
                 Toast.makeText(RoomActivity.this, "User Updated ", Toast.LENGTH_LONG).show();
 
@@ -151,12 +128,8 @@ public class RoomActivity extends LifecycleActivity {
         alert.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        App.get().getDB().userDao().delete(userDetail);
-                    }
-                }).start();
+                userViewModel.deleteUserInfo(userDetail);
+
 
                 Toast.makeText(RoomActivity.this, "User Deleted ", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
