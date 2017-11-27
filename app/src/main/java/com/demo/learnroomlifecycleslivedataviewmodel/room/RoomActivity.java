@@ -6,10 +6,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,11 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.demo.learnroomlifecycleslivedataviewmodel.ClickListener;
 import com.demo.learnroomlifecycleslivedataviewmodel.R;
-import com.demo.learnroomlifecycleslivedataviewmodel.RecyclerTouchListener;
+import com.demo.learnroomlifecycleslivedataviewmodel.custom.ClickListener;
+import com.demo.learnroomlifecycleslivedataviewmodel.custom.RecyclerTouchListener;
 import com.demo.learnroomlifecycleslivedataviewmodel.databinding.ActivityRoomBinding;
-
 
 import java.util.List;
 
@@ -29,8 +28,11 @@ import java.util.List;
  * Created by Mayur on 15/9/17.
  */
 
-public class RoomActivity extends LifecycleActivity {
+public class RoomActivity extends AppCompatActivity {
 
+
+    StockLiveData stockLiveData;
+    String mSymbol;
     Button btAddUser;
     EditText etUserName;
     private RecyclerView recyclerView;
@@ -38,6 +40,14 @@ public class RoomActivity extends LifecycleActivity {
     UserLiveData userLiveData = new UserLiveData();
     ActivityRoomBinding activityRoomBinding;
     UserViewModel userViewModel;
+
+    public RoomActivity() {
+
+    }
+
+    public RoomActivity(String symbol) {
+        mSymbol = symbol;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +59,15 @@ public class RoomActivity extends LifecycleActivity {
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        subscribeUi(userViewModel);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                subscribeUi(userViewModel);
+            }
+        }).start();
+
+
+        stockLiveData = new StockLiveData("ABCD");
 
         //subscribeToLiveData();
 
@@ -90,6 +108,8 @@ public class RoomActivity extends LifecycleActivity {
             }
         });
 
+
+        stockLiveData.onActive();
 
     }
 
@@ -166,6 +186,7 @@ public class RoomActivity extends LifecycleActivity {
             @Override
             public void onChanged(@Nullable List<UserDetail> userDetails) {
                 if (userDetails != null) {
+
                     userAdapter = new UserAdapter(userDetails);
                     activityRoomBinding.recyclerView.setAdapter(userAdapter);
 
@@ -183,4 +204,12 @@ public class RoomActivity extends LifecycleActivity {
     }
 
 
+    public void requestPriceUpdates(SimplePriceListener mListener) {
+
+
+    }
+
+    public void removeUpdates(SimplePriceListener mListener) {
+
+    }
 }

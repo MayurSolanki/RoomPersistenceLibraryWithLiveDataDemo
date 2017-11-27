@@ -1,4 +1,4 @@
-package com.demo.learnroomlifecycleslivedataviewmodel;
+package com.demo.learnroomlifecycleslivedataviewmodel.custom;
 
 import android.view.View;
 

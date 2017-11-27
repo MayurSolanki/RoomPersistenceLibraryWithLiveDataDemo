@@ -23,11 +23,11 @@ public interface UserDao {
     LiveData<List<UserDetail>> getAllUser();
 
 
-    @Query("SELECT name FROM UserDetail WHERE name LIKE :name LIMIT 1")
-    UserDetail findByName(String name);
+//    @Query("SELECT name FROM UserDetail WHERE name LIKE :name LIMIT 1")
+//    UserDetail findByName(String name);
 
-//    @Insert
-//    void insertAll(List<UserDetail> products);
+    @Insert
+    void insertAll(List<UserDetail> products);
 
     @Update
     void update(UserDetail userDetail);
