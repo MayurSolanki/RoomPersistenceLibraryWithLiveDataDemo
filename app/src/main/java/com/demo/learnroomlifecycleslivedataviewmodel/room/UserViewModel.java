@@ -28,18 +28,39 @@ import java.util.List;
 public class UserViewModel extends AndroidViewModel {
 
 
+    UserLiveData userLiveData;
     Context context;
     private LiveData<List<UserDetail>> mObservableProducts;
     public ObservableField<Integer> btnAddUser = new ObservableField<>();
     public ObservableField<String> userName = new ObservableField<>("");
+    private static MutableLiveData<String> message = new MutableLiveData<String>();
+    public  int tapCounter = 1;
+
 
     public UserViewModel(Application application) {
         super(application);
         context = application;
 
         mObservableProducts  = App.get().getDB().userDao().getAllUser();
+        userLiveData = new UserLiveData();
 
+        message.setValue("Start Tapping");
 
+    }
+
+    public View.OnClickListener btnClicked() {
+        return v -> {
+            Toast.makeText(context, "Btn Clicked", Toast.LENGTH_SHORT).show();
+            tapCounter++;
+
+            // message.setValue(String.valueOf(tapCounter++));
+        };
+    }
+    //sets latest time to LiveData
+    public  LiveData<String> getTapCount(){
+        // message.setValue(String.valueOf(tapCounter));
+        message.postValue(String.valueOf(tapCounter));
+        return message;
     }
 
 

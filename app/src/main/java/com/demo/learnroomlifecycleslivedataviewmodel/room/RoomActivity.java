@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,9 +38,11 @@ public class RoomActivity extends AppCompatActivity {
     EditText etUserName;
     private RecyclerView recyclerView;
     public UserAdapter userAdapter;
-    UserLiveData userLiveData = new UserLiveData();
+    //UserLiveData userLiveData = new UserLiveData();
     ActivityRoomBinding activityRoomBinding;
     UserViewModel userViewModel;
+
+
 
     public RoomActivity() {
 
@@ -69,7 +72,7 @@ public class RoomActivity extends AppCompatActivity {
 
         stockLiveData = new StockLiveData("ABCD");
 
-        //subscribeToLiveData();
+      //  subscribeToLiveData();
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -98,18 +101,18 @@ public class RoomActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                if (etUserName.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(RoomActivity.this, "Username required !!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                userViewModel.insertUserInDb(etUserName.getText().toString().trim());
+//                if (etUserName.getText().toString().trim().isEmpty()) {
+//                    Toast.makeText(RoomActivity.this, "Username required !!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                userViewModel.insertUserInDb(etUserName.getText().toString().trim());
 
             }
         });
 
 
-        stockLiveData.onActive();
+       // stockLiveData.onActive();
 
     }
 
@@ -181,20 +184,31 @@ public class RoomActivity extends AppCompatActivity {
 //    }
 
     private void subscribeUi(UserViewModel userViewModel) {
-
-        userViewModel.getAllUser().observe(this, new Observer<List<UserDetail>>() {
+        userViewModel.getTapCount().observe(RoomActivity.this, new android.arch.lifecycle.Observer<String>() {
             @Override
-            public void onChanged(@Nullable List<UserDetail> userDetails) {
-                if (userDetails != null) {
+            public void onChanged(@Nullable String s) {
 
-                    userAdapter = new UserAdapter(userDetails);
-                    activityRoomBinding.recyclerView.setAdapter(userAdapter);
+                Log.e("","Observe Tap Counter: "+s);
+                etUserName.setText("Observe Tap Counterrrr: "+s);
 
-                } else {
-                    Toast.makeText(RoomActivity.this, "No data", Toast.LENGTH_SHORT).show();
-                }
+                //activityHelpBinding..tvMessage1.setText("Observe Tap Counter: "+s);
             }
         });
+
+
+//        userViewModel.getAllUser().observe(this, new Observer<List<UserDetail>>() {
+//            @Override
+//            public void onChanged(@Nullable List<UserDetail> userDetails) {
+//                if (userDetails != null) {
+//
+//                    userAdapter = new UserAdapter(userDetails);
+//                    activityRoomBinding.recyclerView.setAdapter(userAdapter);
+//
+//                } else {
+//                    Toast.makeText(RoomActivity.this, "No data", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
 
