@@ -1,6 +1,5 @@
 package com.demo.learnroomlifecycleslivedataviewmodel.room;
 
-import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -38,10 +37,9 @@ public class RoomActivity extends AppCompatActivity {
     EditText etUserName;
     private RecyclerView recyclerView;
     public UserAdapter userAdapter;
-    //UserLiveData userLiveData = new UserLiveData();
+    UserLiveData userLiveData = new UserLiveData();
     ActivityRoomBinding activityRoomBinding;
     UserViewModel userViewModel;
-
 
 
     public RoomActivity() {
@@ -72,7 +70,7 @@ public class RoomActivity extends AppCompatActivity {
 
         stockLiveData = new StockLiveData("ABCD");
 
-      //  subscribeToLiveData();
+          subscribeToLiveData();
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -101,18 +99,18 @@ public class RoomActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-//                if (etUserName.getText().toString().trim().isEmpty()) {
-//                    Toast.makeText(RoomActivity.this, "Username required !!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                userViewModel.insertUserInDb(etUserName.getText().toString().trim());
+                if (etUserName.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(RoomActivity.this, "Username required !!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                userViewModel.insertUserInDb(etUserName.getText().toString().trim());
 
             }
         });
 
 
-       // stockLiveData.onActive();
+        stockLiveData.onActive();
 
     }
 
@@ -163,52 +161,52 @@ public class RoomActivity extends AppCompatActivity {
 
     }
 
-//    private void subscribeToLiveData() {
-//
-//        final Observer<List<UserDetail>> observer = new Observer<List<UserDetail>>() {
-//            /**
-//             * Called when the data is changed.
-//             *
-//             * @param userDetails The new data
-//             */
-//            @Override
-//            public void onChanged(@Nullable List<UserDetail> userDetails) {
-//                userAdapter = new UserAdapter(userDetails);
-//                activityRoomBinding.recyclerView.setAdapter(userAdapter);
-//            }
-//
-//
-//        };
-//
-//        userLiveData.observe(this, observer);
-//    }
+    private void subscribeToLiveData() {
+
+        final Observer<List<UserDetail>> observer = new Observer<List<UserDetail>>() {
+            /**
+             * Called when the data is changed.
+             *
+             * @param userDetails The new data
+             */
+            @Override
+            public void onChanged(@Nullable List<UserDetail> userDetails) {
+                userAdapter = new UserAdapter(userDetails);
+                activityRoomBinding.recyclerView.setAdapter(userAdapter);
+            }
+
+
+        };
+
+        userLiveData.observe(this, observer);
+    }
 
     private void subscribeUi(UserViewModel userViewModel) {
         userViewModel.getTapCount().observe(RoomActivity.this, new android.arch.lifecycle.Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 
-                Log.e("","Observe Tap Counter: "+s);
-                etUserName.setText("Observe Tap Counterrrr: "+s);
+                Log.e("", "Observe Tap Counter: " + s);
+                etUserName.setText("Observe Tap Counterrrr: " + s);
 
                 //activityHelpBinding..tvMessage1.setText("Observe Tap Counter: "+s);
             }
         });
 
 
-//        userViewModel.getAllUser().observe(this, new Observer<List<UserDetail>>() {
-//            @Override
-//            public void onChanged(@Nullable List<UserDetail> userDetails) {
-//                if (userDetails != null) {
-//
-//                    userAdapter = new UserAdapter(userDetails);
-//                    activityRoomBinding.recyclerView.setAdapter(userAdapter);
-//
-//                } else {
-//                    Toast.makeText(RoomActivity.this, "No data", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        userViewModel.getAllUser().observe(this, new Observer<List<UserDetail>>() {
+            @Override
+            public void onChanged(@Nullable List<UserDetail> userDetails) {
+                if (userDetails != null) {
+
+                    userAdapter = new UserAdapter(userDetails);
+                    activityRoomBinding.recyclerView.setAdapter(userAdapter);
+
+                } else {
+                    Toast.makeText(RoomActivity.this, "No data", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 

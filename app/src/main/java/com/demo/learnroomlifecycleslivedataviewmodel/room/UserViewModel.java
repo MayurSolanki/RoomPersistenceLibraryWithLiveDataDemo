@@ -48,14 +48,14 @@ public class UserViewModel extends AndroidViewModel {
 
     }
 
-    public View.OnClickListener btnClicked() {
-        return v -> {
-            Toast.makeText(context, "Btn Clicked", Toast.LENGTH_SHORT).show();
-            tapCounter++;
-
-            // message.setValue(String.valueOf(tapCounter++));
-        };
-    }
+//    public View.OnClickListener btnClicked() {
+//        return v -> {
+////            Toast.makeText(context, "Btn Clicked", Toast.LENGTH_SHORT).show();
+////            tapCounter++;
+//
+//             message.setValue(String.valueOf(tapCounter++));
+//        };
+//    }
     //sets latest time to LiveData
     public  LiveData<String> getTapCount(){
         // message.setValue(String.valueOf(tapCounter));
